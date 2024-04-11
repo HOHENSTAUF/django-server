@@ -16,13 +16,13 @@ def refresh(request):
 @api_view(['POST'])
 def logout(request):
     return Response({})
-'''
+
 @api_view('GET')
 def me(request):
     return Response({})
 
-@api_view('PUT')
+'''
+@api_view(['PUT'])
 def me(request):
     return Response({})
-
 '''
