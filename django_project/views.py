@@ -28,7 +28,7 @@ def login(request):
     user = get_object_or_404(User, email=request.data['email'])
     if not user.check_password(request.data['password']):
         return Response({"detail": "not found"}, status = status.HTTP_404_NOT_FOUND)
-    token, created = Token.objects.get_or_create(user=user)    #required different access token
+    token, created = Token.objects.get_or_create(user=user)    #refresh token here
     serializer = UserSerializer(instance=user)
     return Response({"token": token.key, "user": serializer.data})
 
@@ -38,9 +38,10 @@ def refresh(request):
 
 @api_view(['POST'])
 def logout(request):
+    
     return Response({})
 
-@api_view(['GET'])
+@api_view(['GET', 'PUT'])
 def me(request):
     return Response({})
 
