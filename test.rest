@@ -1,25 +1,25 @@
-POST http://localhost:8000/register
+POST http://localhost:8000/api/register
 Content-Type: application/json
 
 {"password": "password", "email": "user@example.com"}
 
 ### 
 
-POST http://localhost:8000/login
+POST http://localhost:8000/api/login
 Content-Type: application/json
 
 {"email": "user@example.com", "password": "password"}
 
 ###
 
-POST http://localhost:8000/refresh
+POST http://localhost:8000/api/refresh
 Content-Type: application/json
 
 {"refresh_token": "eb0464c2-ed6e-4346-a709-042c33946154"}
 
 ###
 
-POST http://localhost:8000/logout
+POST http://localhost:8000/api/logout
 Content-Type: application/json
 
 {"refresh_token": "eb0464c2-ed6e-4346-a709-042c33946154"}
