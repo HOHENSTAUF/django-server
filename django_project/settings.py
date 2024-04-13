@@ -39,8 +39,15 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "rest_framework.authtoken",
+    "constance",
+    "core",
     
 ]
+
+CONSTANCE_CONFIG = {
+    'REFRESH_TOKEN_LIFETIME': 2592000,
+    'ACCESS_TOKEN_LIFETIME': 30,
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -51,6 +58,8 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+AUTH_USER_MODEL = "core.User"
 
 ROOT_URLCONF = "django_project.urls"
 

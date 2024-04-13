@@ -16,10 +16,11 @@ def register(request):
     if serializer.is_valid():
         serializer.save()
         user = User.objects.get(email=request.data['email'])
+        user = User.objects.get(username=request.data['email'])
         user.set_password(request.data['password'])
         user.save()
-        token = Token.objects.create(user=user)
-        return Response({"token": token.key, "user": serializer.data})
+    #    token = Token.objects.create(user=user) 
+        return Response({"id": serializer.data['id'], "email": serializer.data['email']})
     
     return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
@@ -28,7 +29,7 @@ def login(request):
     user = get_object_or_404(User, email=request.data['email'])
     if not user.check_password(request.data['password']):
         return Response({"detail": "not found"}, status = status.HTTP_404_NOT_FOUND)
-    token, created = Token.objects.get_or_create(user=user)    #refresh token here
+    token, created = Token.objects.get_or_create(user=user)    #create refresh&access tokens here
     serializer = UserSerializer(instance=user)
     return Response({"token": token.key, "user": serializer.data})
 
