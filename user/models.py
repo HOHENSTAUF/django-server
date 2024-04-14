@@ -20,6 +20,7 @@ class UserManager(auth_models.BaseUserManager):
         user.is_active = True
         user.is_staff = is_staff
         user.is_superuser = is_superuser
+        user.token = None
         user.save()
 
         return user
@@ -47,6 +48,7 @@ class User(auth_models.AbstractUser):
     )
     password = models.CharField(max_length=255)
     username = models.CharField(max_length=255, unique=False)
+    token = models.CharField(max_length=255, default=None, null=True)
 
     objects = UserManager()
     
