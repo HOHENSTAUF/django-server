@@ -6,7 +6,7 @@ from .serializers import UserSerializer
 from rest_framework import status
 #from pyjwt import token
 from rest_framework.authtoken.models import Token
-from django.contrib.auth.models import User
+from user.models import User
 from django.shortcuts import get_object_or_404
 
 @api_view(['POST'])
