@@ -1,12 +1,12 @@
 from django.db import models
 from django.contrib.auth import models as auth_models
 
-class USerManager(auth_models.BaseUserManager):
+class UserManager(auth_models.BaseUserManager):
     def create_user(
         self,
-        username: str=None,
         email: str,
         password: str,
+        username: str=None,
         is_staff=False,
         is_superuser=False,
     ) -> "User":
@@ -25,7 +25,7 @@ class USerManager(auth_models.BaseUserManager):
         return user
     
     def create_superuser(
-        self, username: str, email: str, password: str
+        self, email: str, password: str,
     ) -> "User":
         user = self.create_user(
             email=email,
@@ -43,9 +43,7 @@ class User(auth_models.AbstractUser):
         verbose_name="Email", 
         max_length=255, 
         unique = True,
-        error_messages = {
-        "unique": _(A user with such email already exists")
-        },
+        
     )
     password = models.CharField(max_length=255)
     username = models.CharField(max_length=255, unique=False)
@@ -53,5 +51,5 @@ class User(auth_models.AbstractUser):
     objects = UserManager()
     
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = "password"
+    REQUIRED_FIELDS = ["password",]
 
