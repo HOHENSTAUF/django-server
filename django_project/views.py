@@ -5,7 +5,8 @@ from rest_framework.response import Response
 from .serializers import UserSerializer
 from rest_framework import status
 #from pyjwt import token
-from rest_framework.authtoken.models import Token
+#from rest_framework.authtoken.models import Token
+from .authentication import create_access_token, create_refresh_token
 from user.models import User
 from django.shortcuts import get_object_or_404
 
@@ -18,8 +19,8 @@ def register(request):
         user = User.objects.get(email=request.data['email'])
         user.set_password(request.data['password'])
         user.save()
-        token = Token.objects.create(user=user)
-        return Response({"token": token.key, "user": serializer.data})
+    #    token = Token.objects.create(user=user)
+        return Response({"id": serializer.data["id"], "email": serializer.data["email"]})
     
     return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
@@ -28,9 +29,12 @@ def login(request):
     user = get_object_or_404(User, email=request.data['email'])
     if not user.check_password(request.data['password']):
         return Response({"detail": "not found"}, status = status.HTTP_404_NOT_FOUND)
-    token, created = Token.objects.get_or_create(user=user)    #refresh token here
+    
+    access_token = create_access_token(user.id)
+    refresh_token = create_refresh_token(user.id)
+    #token, created = Token.objects.get_or_create(user=user)    #refresh token here
     serializer = UserSerializer(instance=user)
-    return Response({"token": token.key, "user": serializer.data})
+    return Response({"access_token": access_token, "refresh_token": refresh_token})
 
 @api_view(['POST'])
 def refresh(request):
