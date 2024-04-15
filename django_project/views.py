@@ -67,10 +67,25 @@ def logout(request):
 
 @api_view(['GET', 'PUT'])
 def me(request):
+    header_data = request.headers["Header"].split()
+
+    if not (len(header_data) == 3):
+        return Response({"detail": "wrong header"}, status = status.HTTP_404_NOT_FOUND)
+    token = header_data[2]
+    token_info = decode_access_token(token)
+
     if request.method == "GET":
-        return Response({"User": "ABC"})
+        return Response(
+            {"id": token_info["user_id"],
+             "username": token_info["username"],
+             "email": token_info["email"],
+                }
+            )
     if request.method == "PUT":
-        return Response({"username": "abc"})
+        user = User.objects.get(id=token_info["user_id"])
+        user.username = request.data["username"]
+        user.save()
+        return Response({"username": user.username})
 
 '''
 @api_view(['PUT'])
