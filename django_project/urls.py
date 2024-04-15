@@ -24,4 +24,5 @@ urlpatterns = [
     path("api/login", views.login),
     path("api/refresh", views.refresh),
     path("api/logout", views.logout),
+    path("api/me", views.me),
 ]

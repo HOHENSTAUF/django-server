@@ -48,7 +48,7 @@ class User(auth_models.AbstractUser):
     )
     password = models.CharField(max_length=255)
     username = models.CharField(max_length=255, unique=False)
-    refresh_token = models.CharField(max_length=255, default=None, null=True)
+    refresh_token = models.CharField(max_length=255, default=None, null=True, blank=True)
 
     objects = UserManager()
     

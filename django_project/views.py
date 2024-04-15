@@ -7,6 +7,7 @@ from rest_framework import status
 #from pyjwt import token
 #from rest_framework.authtoken.models import Token
 from .authentication import create_access_token, create_refresh_token
+from .authentication import decode_access_token, decode_refresh_token
 from user.models import User
 from django.shortcuts import get_object_or_404
 
@@ -32,22 +33,44 @@ def login(request):
     
     access_token = create_access_token(user.id)
     refresh_token = create_refresh_token(user.id)
+    user.refresh_token = refresh_token
+    user.save()
     #token, created = Token.objects.get_or_create(user=user)    #refresh token here
     serializer = UserSerializer(instance=user)
     return Response({"access_token": access_token, "refresh_token": refresh_token})
 
 @api_view(['POST'])
 def refresh(request):
-    return Response({})
+    refresh_token = request.data["refresh_token"]
+    token_info = decode_refresh_token(request.data["refresh_token"])
+    user = User.objects.get(id=token_info["user_id"])
+
+    if not (refresh_token == user.refresh_token):
+        return Response({"detail": "wrong token"}, status = status.HTTP_404_NOT_FOUND)
+    
+    new_access_token = create_access_token(token_info["user_id"])
+    return Response({"access_token": new_access_token})
 
 @api_view(['POST'])
 def logout(request):
+    refresh_token = request.data["refresh_token"]
+    token_info = decode_refresh_token(request.data["refresh_token"])
+    user = User.objects.get(id=token_info["user_id"])
     
-    return Response({})
+    if not (refresh_token == user.refresh_token):
+        return Response({"detail": "wrong token"}, status = status.HTTP_404_NOT_FOUND)
+    
+
+    user.refresh_token = ""
+    user.save()
+    return Response({"success": "User logged out.", "User": user.email})
 
 @api_view(['GET', 'PUT'])
 def me(request):
-    return Response({})
+    if request.method == "GET":
+        return Response({"User": "ABC"})
+    if request.method == "PUT":
+        return Response({"username": "abc"})
 
 '''
 @api_view(['PUT'])
