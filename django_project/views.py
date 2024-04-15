@@ -87,8 +87,3 @@ def me(request):
         user.save()
         return Response({"username": user.username})
 
-'''
-@api_view(['PUT'])
-def me(request):
-    return Response({})
-'''
