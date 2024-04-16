@@ -8,23 +8,29 @@ from .authentication import create_access_token, create_refresh_token
 from .authentication import decode_access_token, decode_refresh_token
 from user.models import User
 from django.shortcuts import get_object_or_404
+from drf_spectacular.utils import extend_schema, OpenApiTypes
 
-
+@extend_schema(
+        request=UserSerializer,
+        responses={201: UserSerializer},
+)
 @api_view(['POST'])
-
 def register(request):
-    
+
     serializer = UserSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
         user = User.objects.get(email=request.data['email'])
         user.set_password(request.data['password'])
         user.save()
-    #    token = Token.objects.create(user=user)
         return Response({"id": serializer.data["id"], "email": serializer.data["email"]})
     
     return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
+@extend_schema(
+        request=UserSerializer,
+        responses={201: UserSerializer},
+)
 @api_view(['POST'])
 def login(request):
     user = get_object_or_404(User, email=request.data['email'])
@@ -39,6 +45,10 @@ def login(request):
     serializer = UserSerializer(instance=user)
     return Response({"access_token": access_token, "refresh_token": refresh_token})
 
+@extend_schema(
+        request=UserSerializer,
+        responses={201: UserSerializer},
+)
 @api_view(['POST'])
 def refresh(request):
     refresh_token = request.data["refresh_token"]
@@ -51,6 +61,10 @@ def refresh(request):
     new_access_token = create_access_token(token_info["user_id"])
     return Response({"access_token": new_access_token})
 
+@extend_schema(
+        request=UserSerializer,
+        responses={201: UserSerializer},
+)
 @api_view(['POST'])
 def logout(request):
     refresh_token = request.data["refresh_token"]
@@ -65,6 +79,10 @@ def logout(request):
     user.save()
     return Response({"success": "User logged out.", "User": user.email})
 
+@extend_schema(
+        request=UserSerializer,
+        responses={201: UserSerializer},
+)
 @api_view(['GET', 'PUT'])
 def me(request):
     header_data = request.headers["Header"].split()

@@ -6,6 +6,10 @@ paths:
   /api/login:
     post:
       operationId: api_login_create
+      description: |-
+        - User authentication via email and password
+        - Will return access and refresh tokens
+        
       tags:
       - api
       security:
