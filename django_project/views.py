@@ -4,14 +4,14 @@ from rest_framework.response import Response
 
 from .serializers import UserSerializer
 from rest_framework import status
-#from pyjwt import token
-#from rest_framework.authtoken.models import Token
 from .authentication import create_access_token, create_refresh_token
 from .authentication import decode_access_token, decode_refresh_token
 from user.models import User
 from django.shortcuts import get_object_or_404
 
+
 @api_view(['POST'])
+
 def register(request):
     
     serializer = UserSerializer(data=request.data)
