@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import datetime
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,10 +40,16 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "rest_framework.authtoken",
+    "constance",
     "user",
     "drf_spectacular",
     
 ]
+
+CONSTANCE_CONFIG = {
+    'ACCESS_LIFETIME': (datetime.timedelta(seconds=30), 'access token lifetime'),
+    'REFRESH_LIFETIME': (datetime.timedelta(days=30), 'refresh token lifetime'),
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

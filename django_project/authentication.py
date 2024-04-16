@@ -1,5 +1,6 @@
 import jwt
 import datetime
+from constance import config
 from user.models import User
 
 
@@ -10,8 +11,7 @@ def create_access_token(id):
         'username': user.username,
         'email': user.email,
 
-        
-        'exp': datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(seconds=30),
+        'exp': datetime.datetime.now(datetime.timezone.utc) + config.ACCESS_LIFETIME,
         'iat': datetime.datetime.now(datetime.timezone.utc),
     }, 'access_secret', algorithm='HS256')
 
@@ -19,7 +19,7 @@ def create_access_token(id):
 def create_refresh_token(id):
     return jwt.encode({
         'user_id': id,
-        'exp': datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(seconds=15),
+        'exp': datetime.datetime.now(datetime.timezone.utc) + config.REFRESH_LIFETIME,
         'iat': datetime.datetime.now(datetime.timezone.utc),
     }, 'refresh_secret', algorithm='HS256')
 
