@@ -1,14 +1,14 @@
 from rest_framework.decorators import api_view
-
 from rest_framework.response import Response
 
-from .serializers import UserSerializer
+from .serializers import UserSerializer, TokensSerializer, RefreshTokenSerializer
+from .serializers import RetrieveDataSerializer, ChangeDataSerializer, AccessTokenSerializer
 from rest_framework import status
 from .authentication import create_access_token, create_refresh_token
 from .authentication import decode_access_token, decode_refresh_token
 from user.models import User
 from django.shortcuts import get_object_or_404
-from drf_spectacular.utils import extend_schema, OpenApiTypes
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 
 @extend_schema(
         request=UserSerializer,
@@ -29,7 +29,7 @@ def register(request):
 
 @extend_schema(
         request=UserSerializer,
-        responses={201: UserSerializer},
+        responses={201: TokensSerializer},
 )
 @api_view(['POST'])
 def login(request):
@@ -46,8 +46,8 @@ def login(request):
     return Response({"access_token": access_token, "refresh_token": refresh_token})
 
 @extend_schema(
-        request=UserSerializer,
-        responses={201: UserSerializer},
+        request=RefreshTokenSerializer,
+        responses={201: AccessTokenSerializer},
 )
 @api_view(['POST'])
 def refresh(request):
@@ -62,7 +62,7 @@ def refresh(request):
     return Response({"access_token": new_access_token})
 
 @extend_schema(
-        request=UserSerializer,
+        request=RefreshTokenSerializer,
         responses={201: UserSerializer},
 )
 @api_view(['POST'])
@@ -80,8 +80,30 @@ def logout(request):
     return Response({"success": "User logged out.", "User": user.email})
 
 @extend_schema(
-        request=UserSerializer,
-        responses={201: UserSerializer},
+        request=None,
+        parameters=[
+            OpenApiParameter(
+                name='access token', 
+                type=str, 
+                location=OpenApiParameter.HEADER,  
+                description='check user access',
+            ),
+        ],
+        responses={201: RetrieveDataSerializer},
+        methods=["GET"]
+)
+@extend_schema(
+        request=ChangeDataSerializer,
+        parameters=[
+            OpenApiParameter(
+                name='access token', 
+                type=str, 
+                location=OpenApiParameter.HEADER,  
+                description='check user access',
+            ),
+        ],
+        responses={201: ChangeDataSerializer},
+        methods=["PUT"]
 )
 @api_view(['GET', 'PUT'])
 def me(request):
