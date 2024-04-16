@@ -4,7 +4,7 @@ Authentication uses token-based model.
 Tokens are generated with PyJWT. *Refresh Token* is stored in database along with user information,
 *Access Token* could be retrieved via login or refresh requests, using *Refresh Token*. I've also choose to use JWT to encode 
 *user id* and *expiration time* of the *Refresh Token*. 
-There is a lot of work to be done to make the API truly safe and functional, however, at this particular stage
+There is a lot of work to be done to make the API truly safe and functional, however, on this particular stage
 I focused on realisation of each given objective which are:
 
 - RESTful API must be developed with Django and Django REST Framework.
