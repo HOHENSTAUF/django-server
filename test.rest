@@ -1,7 +1,7 @@
 POST http://localhost:8000/api/register
 Content-Type: application/json
 
-{"password": "password", "email": "user@example.com"}
+{"password": "password", "email": "user2@example.com"}
 
 ### 
 
@@ -15,7 +15,7 @@ Content-Type: application/json
 POST http://localhost:8000/api/refresh
 Content-Type: application/json
 
-{"refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJleHAiOjE3MTU3OTI3NTAsImlhdCI6MTcxMzIwMDc1MH0._foGu84nxYUzGGt3pK0L1eHPXs7Era5M7APbUB3FQBw"}
+{"refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJleHAiOjE3MTMyODE5MjEsImlhdCI6MTcxMzI4MTkwNn0.W4Jn_AKMVxTDVCZOCK9oMichOM95R_4kempBx5k49Ug"}
 
 ###
 
@@ -27,13 +27,13 @@ Content-Type: application/json
 ###
 
 GET http://localhost:8000/api/me
-Header: Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJ1c2VybmFtZSI6IkpvaG4gU21pdGgiLCJlbWFpbCI6InVzZXJAZXhhbXBsZS5jb20iLCJleHAiOjE3MTMyMDA3OTIsImlhdCI6MTcxMzIwMDc2Mn0.cGgq_wGWxoJDYqEu4-FDvTyVlZDJ29Ic3VTgTf_mhPk
+Header: Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJ1c2VybmFtZSI6IkpvaG4gU21pdGgiLCJlbWFpbCI6InVzZXJAZXhhbXBsZS5jb20iLCJleHAiOjE3MTMyODE3NjksImlhdCI6MTcxMzI4MTczOX0.G9IMdcoA_PQ75vVMEWPHBrcuud5-t8iFpNPrCYvsr84
 Content-Type: application/json
 
 ###
 
 PUT http://localhost:8000/api/me
-Header: Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJ1c2VybmFtZSI6IkpvaG4gU21pdGgiLCJlbWFpbCI6InVzZXJAZXhhbXBsZS5jb20iLCJleHAiOjE3MTMyMDA3OTIsImlhdCI6MTcxMzIwMDc2Mn0.cGgq_wGWxoJDYqEu4-FDvTyVlZDJ29Ic3VTgTf_mhPk
+Header: Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJ1c2VybmFtZSI6IkpvaG4gU21pdGgiLCJlbWFpbCI6InVzZXJAZXhhbXBsZS5jb20iLCJleHAiOjE3MTMyODE3NjksImlhdCI6MTcxMzI4MTczOX0.G9IMdcoA_PQ75vVMEWPHBrcuud5-t8iFpNPrCYvsr84
 Content-Type: application/json
 
 {"username": "John Smith"}

@@ -1,6 +1,5 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
 from .serializers import UserSerializer, TokensSerializer, RefreshTokenSerializer
 from .serializers import RetrieveDataSerializer, ChangeDataSerializer, AccessTokenSerializer
 from rest_framework import status
@@ -33,17 +32,15 @@ def register(request):
 )
 @api_view(['POST'])
 def login(request):
-    user = get_object_or_404(User, email=request.data['email'])
-    if not user.check_password(request.data['password']):
-        return Response({"detail": "not found"}, status = status.HTTP_404_NOT_FOUND)
-    
-    access_token = create_access_token(user.id)
-    refresh_token = create_refresh_token(user.id)
-    user.refresh_token = refresh_token
-    user.save()
-    #token, created = Token.objects.get_or_create(user=user)    #refresh token here
-    serializer = UserSerializer(instance=user)
-    return Response({"access_token": access_token, "refresh_token": refresh_token})
+        user = get_object_or_404(User, email=request.data['email'])
+        if not user.check_password(request.data['password']):
+            return Response({"detail": "not found"}, status = status.HTTP_404_NOT_FOUND)
+        access_token = create_access_token(user.id)
+        refresh_token = create_refresh_token(user.id)
+        user.refresh_token = refresh_token
+        user.save()
+        serializer = UserSerializer(instance=user)
+        return Response({"access_token": access_token, "refresh_token": refresh_token})
 
 @extend_schema(
         request=RefreshTokenSerializer,
@@ -51,8 +48,14 @@ def login(request):
 )
 @api_view(['POST'])
 def refresh(request):
+    serializer = RefreshTokenSerializer(data=request.data)
+    if not serializer.is_valid:
+        return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
     refresh_token = request.data["refresh_token"]
-    token_info = decode_refresh_token(request.data["refresh_token"])
+    try:
+        token_info = decode_refresh_token(request.data["refresh_token"])
+    except:
+        return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
     user = User.objects.get(id=token_info["user_id"])
 
     if not (refresh_token == user.refresh_token):
@@ -67,6 +70,8 @@ def refresh(request):
 )
 @api_view(['POST'])
 def logout(request):
+    if not RefreshTokenSerializer(data=request.data).is_valid:
+        return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
     refresh_token = request.data["refresh_token"]
     token_info = decode_refresh_token(request.data["refresh_token"])
     user = User.objects.get(id=token_info["user_id"])
@@ -74,9 +79,9 @@ def logout(request):
     if not (refresh_token == user.refresh_token):
         return Response({"detail": "wrong token"}, status = status.HTTP_404_NOT_FOUND)
     
-
     user.refresh_token = ""
     user.save()
+    
     return Response({"success": "User logged out.", "User": user.email})
 
 @extend_schema(
@@ -122,6 +127,8 @@ def me(request):
                 }
             )
     if request.method == "PUT":
+        if not ChangeDataSerializer(data=request.data).is_valid:
+            return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
         user = User.objects.get(id=token_info["user_id"])
         user.username = request.data["username"]
         user.save()
