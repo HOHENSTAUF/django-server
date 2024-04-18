@@ -95,7 +95,7 @@ DATABASES = {
 
 DATABASES["default"] = dj_database_url.parse("postgres://restapi_project_database_user:Lls9MTuco8p5E3KCHdqtn7pV4hCTdxXW@dpg-cogfkh4f7o1s73ftmv0g-a.oregon-postgres.render.com/restapi_project_database")
 
-
+CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
