@@ -85,6 +85,8 @@ DJANGO_SUPERUSER_PASSWORD = "admin"
 DJANGO_SUPERUSER_USERNAME = "admin"
 DJANGO_SUPERUSER_EMAIL = "admin@example.com"
 
+CSRF_TRUSTED_ORIGINS = ["https://django-server-1-c1qg.onrender.com"]
+
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
