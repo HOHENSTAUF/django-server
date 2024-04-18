@@ -1,1 +1,1 @@
-python server.py && python manage.py createsuperuser --noinput
+python server.py

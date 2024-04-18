@@ -27,7 +27,7 @@ SECRET_KEY = "django-insecure-9(uu&6@-!zirx52y__m6x^yp*kfh7mq!q@s(@&b%t^0t*)e*(9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["django-server-1-c1qg.onrender.com"]
+ALLOWED_HOSTS = ["django-server-1-c1qg.onrender.com", "localhost"]
 
 
 # Application definition
@@ -85,7 +85,7 @@ DJANGO_SUPERUSER_PASSWORD = "admin"
 DJANGO_SUPERUSER_USERNAME = "admin"
 DJANGO_SUPERUSER_EMAIL = "admin@example.com"
 
-CSRF_TRUSTED_ORIGINS = ["https://django-server-1-c1qg.onrender.com"]
+CSRF_TRUSTED_ORIGINS = ["https://django-server-1-c1qg.onrender.com", "https://127.0.0.1"]
 
 
 # Database
